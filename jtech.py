@@ -158,3 +158,31 @@ def get_weeks(filename, name_col, summary_col):
     f.close()
 
 # get_weeks('summary', 'Name', 'summary')
+
+'''
+Gets everyone's answers for a specific question
+NOTE - ignores unansswered questions
+
+Inputs:
+    filename - csv file name string with responses - the file must be in the same directory 
+    headline - string, your desired header
+    question_col - column name of the question you'd like to format
+    name_col -string of the column/question asking for peoples' names- must be exact 
+'''
+def get_question(filename, headline, question_col, name_col):
+    with open('{}.csv'.format(filename), newline='') as csvfile:
+        answers = []
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            answer = row[question_col]
+            name = row[name_col]
+
+            if answer:
+                answers.append('\\item %s - (%s)' % (answer, name)) 
+            
+    body = '\\headline{%s} \\begin{itemize}' % headline + "\n".join(answers) + '\\end{itemize} \\closearticle' 
+    f = open(question_col+".tex", "a")
+    f.write(body)
+    f.close() 
+
+# get_question('summary','Hours', 'How many hours did you sleep last night? ', 'Name')
