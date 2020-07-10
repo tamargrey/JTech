@@ -50,7 +50,7 @@ output:
         week summary
 
 '''
-def get_weeks(filename, name_col, summary_col):
+def get_week_summaries(filename, name_col, summary_col):
     with open('{}.csv'.format(filename), newline='') as csvfile:
         summaries = []
         reader = csv.DictReader(csvfile)
@@ -65,7 +65,7 @@ def get_weeks(filename, name_col, summary_col):
     f.write(body)
     f.close()
 
-# get_weeks('summary', 'Name', 'summary')
+# get_week_summaries('summary', 'Name', 'summary')
 
 '''
 Gets everyone's answers for a specific question
@@ -137,7 +137,7 @@ def get_multiple_choice_question_pie(filename, headline, question_col):
     ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     plt.savefig(fname)
 
-get_multiple_choice_question_pie('summary', "Q", 'How did MIT *actually* decide who got to return?')
+# get_multiple_choice_question_pie('summary', "Q", 'How did MIT *actually* decide who got to return?')
 
 
 
