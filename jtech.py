@@ -75,7 +75,7 @@ def format_week(filename):
         choices = [splitword(choice, 50) for choice in choices]
 
         fig1, ax1 = plt.subplots()
-        wedges, _, _ = ax1.pie(nums, autopct='%1.0f%%', shadow=True, startangle=90)
+        wedges, _, _ = ax1.pie(list(nums), autopct='%1.0f%%', shadow=True, startangle=90)
         ax1.legend(wedges, choices)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
@@ -87,7 +87,7 @@ def format_week(filename):
         responses.append("".join(multiple_responses))
 
     responses.append("")  # final \closearticle
-    return "\\closearticle".join(responses)
+    body = "\\closearticle".join(responses)
 
             # summary = row["summary"]
             # summary_len = len(summary.split(' '))
