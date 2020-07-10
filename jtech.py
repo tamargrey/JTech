@@ -35,7 +35,7 @@ def format_week(filename):
             summaries.append("\n".join(person_responses))
 
     summaries.append("") # final \closearticle
-    return "\\closearticle".join(summaries)
+    body = "\\closearticle".join(summaries)
             # summary = row["summary"]
             # summary_len = len(summary.split(' '))
             # one_word = row["one"]
@@ -44,6 +44,9 @@ def format_week(filename):
             # # couldnt remember how to put strings on separate lines
             # summaries.append("\\headline{%s} \n \n  One word summary: %s \n \n Word Count: %d \n \n %s \n \\closearticle" % (name, one_word, summary_len, summary))
     # return summaries
+    f = open("body.tex", "a")
+    f.write(body)
+    f.close()
 
 print(format_week("JTech Week 17 - The 3 Weeks  (Responses) - Form Responses 1"))
 
