@@ -88,25 +88,73 @@ def format_week(filename):
 
     responses.append("")  # final \closearticle
     body = "\\closearticle".join(responses)
-
-            # summary = row["summary"]
-            # summary_len = len(summary.split(' '))
-            # one_word = row["one"]
-            # name = row["name"]
-            #
-            # # couldnt remember how to put strings on separate lines
-            # summaries.append("\\headline{%s} \n \n  One word summary: %s \n \n Word Count: %d \n \n %s \n \\closearticle" % (name, one_word, summary_len, summary))
-    # return summaries
     f = open("body.tex", "a")
     f.write(body)
     f.close()
 
-print(format_week("JTech Week 17 - The 3 Weeks  (Responses) - Form Responses 1"))
+# print(format_week("JTech Week 17 - The 3 Weeks  (Responses) - Form Responses 1"))
 
 
 
+'''
+Allows you to specify a list of questions that you would like the answers to for grouped by person
 
+Use column names from the responses csv
 
+formatting isn't really anything beyond separate headlines - feel free to change to something nicer
+Inputs: 
+    filename - csv file name string with responses - the file must be in the same directory
+    col_names - list of string string of the columns/questions you'd like to pull out by person
 
-
+output:
+    latex file called by_person.tex of format
+        - as headline
+        ...questions
+'''
+def get_questions_by_person(filename, col_names):
+    person_data = []
+    with open('{}.csv'.format(filename), newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            person_data.append("\n \n".join(map(lambda col_name: row[col_name], col_names)))
+    body = " \\headline{-} ".join(person_data)
+    f = open("by_person.tex", "a")
+    f.write(body)
+    f.close() 
     
+# get_questions_by_person('summary', ['Name', 'one', 'summary'])
+
+
+'''
+Lets you get a body.tex file that can serve as peoples' weeks. 
+NOTE you'll probably want to go in the latex file and manually make sure all newlines are actually newlines
+
+Inputs: 
+    filename - csv file name string with responses - the file must be in the same directory
+    name_col - string of the column/question asking for peoples' names- must be exact
+    summary_col - string of the column/question asking for peoples' weeks - must be exact
+
+output:
+    latex file called body.tex of format
+        Name as headline
+        Word count
+
+        week summary
+
+'''
+def get_weeks(filename, name_col, summary_col):
+    with open('{}.csv'.format(filename), newline='') as csvfile:
+        summaries = []
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            summary = row[summary_col]
+            summary_len = len(summary.split(' '))
+            name = row[name_col]
+            
+            summaries.append("\\headline{%s} \n \n \\textbf{Word Count:} %d \n \n  \\vspace{5mm}  %s \n \\closearticle" % (name, summary_len, summary))
+    body = "\n".join(summaries)
+    f = open("body.tex", "a")
+    f.write(body)
+    f.close()
+
+# get_weeks('summary', 'Name', 'summary')
