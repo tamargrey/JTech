@@ -26,6 +26,23 @@ def format_week(filename):
             person_responses = ["\\headline{%s} \n"%name]
 
             for key, entry in row.items():
+                for literal in '&#{}':
+                    if literal in entry:
+                        loc = entry.find(literal)
+                        entry = entry[:loc] + '\\' + entry[loc:]
+                    if literal in key:
+                        loc = key.find(literal)
+                        key = key[:loc] + '\\' + key[loc:]
+
+                for weird_character in "â€™":
+                    if weird_character in entry:
+                        loc = entry.find(weird_character)
+                        entry = entry[:loc] + entry[loc + 1:]
+                    if weird_character in key:
+                        loc = key.find(weird_character)
+                        key = key[:loc] + key[loc + 1:]
+
+                entry = entry.replace('\n', '\n\n').replace('\n\n\n', '\n\n')
 
                 if not entry:
                     continue
@@ -45,16 +62,6 @@ def format_week(filename):
                     key = "And Now: How was your week?  (bonus points if your word count is a palindrome or multiple of 11)"
                     word_count = len(entry.split())
                     entry = "Word Count: {}\n\n".format(word_count) + entry
-
-                for literal in '&#':
-                    if literal in entry:
-                        loc = entry.find(literal)
-                        entry = entry[:loc] + '\\' + entry[loc:]
-
-                for weird_character in "â€™":
-                    if weird_character in key:
-                        loc = key.find(weird_character)
-                        key = key[:loc] + key[loc+1:]
 
                 person_responses.append("\n \\noindent \\textbf{{{}}}:\n\n {}\n".format(key, entry))
 
